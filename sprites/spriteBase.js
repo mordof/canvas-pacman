@@ -24,6 +24,20 @@ spriteBase.prototype.isOppositeStateDown = function() {
   }
 }
 
+spriteBase.prototype.resetStateToFacing = function(){
+  this.rightState = false;
+  this.leftState = false;
+  this.upState = false;
+  this.downState = false;
+
+  switch (this.facing){
+    case 'left': this.leftState = true; break;
+    case 'right': this.rightState = true; break;
+    case 'up': this.upState = true; break;
+    case 'down': this.downState = true; break;
+  }
+}
+
 function getOppositeState(state){
   switch (state) {
     case 'left':
@@ -48,41 +62,55 @@ spriteBase.prototype.doMoveInits = function() {
  // do the key-based movements
   if (this.moving && (!this.isOppositeStateDown())) return false;
 
-  this.queuedMovement = false;
-  
   if (this.leftState) {
   	if (this.xTilePos > 0) {
 	    if (maps[0][this.yTilePos][this.xTilePos - 1]) {
 	       this.facing = 'left';
 	       this.moving = true;
 	       this.xTilePos -= 1;
-	    } 
-	}
+         this.queuedMovement = false;
+	    } else if (this.facing != 'left') {
+        this.moving = true;
+        this.resetStateToFacing();
+      }
+	  }
   } else if (this.rightState) {
   	if (this.xTilePos < mapWidth - 1) {
 	    if (maps[0][this.yTilePos][this.xTilePos + 1]) {
 	      this.facing = 'right';
 	      this.moving = true;
 	      this.xTilePos += 1;
+        this.queuedMovement = false;
 	      //if (maps[0][this.yTilePos][this.xTilePos + 1] == 9) { this.xTilePos = 0 } else { this.xTilePos += 1 };
-	    }
-	}
+	    } else if (this.facing != 'right') {
+        this.moving = true;
+        this.resetStateToFacing();
+      }
+	  }
   } else if (this.upState) {
   	if (this.yTilePos > 0) {
 	    if (maps[0][this.yTilePos - 1][this.xTilePos]) {
 	      this.facing = 'up';
 	      this.moving = true;
 	      this.yTilePos -= 1;
-	    }
-	}
+        this.queuedMovement = false;
+	    } else if (this.facing != 'up') {
+        this.moving = true;
+        this.resetStateToFacing();
+      }
+	  }
   } else if (this.downState) {
   	if (this.yTilePos < mapHeight - 1) {
 	    if (maps[0][this.yTilePos + 1][this.xTilePos]) {
 	      this.facing = 'down';
 	      this.moving = true;
 	      this.yTilePos += 1;
-	    }
-	}
+        this.queuedMovement = false;
+	    } else if (this.facing != 'down') {
+        this.moving = true;
+        this.resetStateToFacing();
+      }
+	  }
   }
 }
 

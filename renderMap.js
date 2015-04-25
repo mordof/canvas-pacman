@@ -32,6 +32,9 @@ function renderPacs(){
 }
 
 function renderMap() {
+	// This section is for if renderMap() is called every frame, to make it rotate colors
+	// by default though, renderMap() is only called once, and cached.
+	// 
 	// if(rUp)
 	// 	r = r + frameData.delta / 30;
 	// else

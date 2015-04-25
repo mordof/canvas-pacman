@@ -1,5 +1,6 @@
 
 function draw(){
+	//renderMap();
 	ctx.drawImage(mapBoundaries, xOffset, yOffset, mapWidth * tileSize, mapHeight * tileSize);
 	renderPacs();
 	if(showDebug)
@@ -24,7 +25,6 @@ function draw(){
 	drawDebugInfo();
 	drawScore();
 	drawLives();
-	
 }
 
 function drawWaypoints() {
@@ -109,9 +109,14 @@ function drawDebugInfo(){
 			info += "\tDestination Waypoint Data: x(" + wayPoints[sprite.nextWayPoint][0] + ") - y("+ wayPoints[sprite.nextWayPoint][1] +")\n";
 			if(sprite.childWaypoints){
 				info += "\tChildren of Waypoints: " + sprite.childWaypoints.length + "\n";
-				info += "\tChild Waypoint Data: x(" + sprite.childWaypoints[0][0] + ") - y("+ sprite.childWaypoints[0][1] +")\n";
-				if(sprite.childWaypoints.length == 2)
-					info += "\tChild Waypoint Data: x(" + sprite.childWaypoints[1][0] + ") - y("+ sprite.childWaypoints[1][1] +")\n";
+				for(var wpCount = 0; wpCount < 4; wpCount++){
+					info += "\tChild Waypoint Data: ";
+					if(sprite.childWaypoints[wpCount]){
+						info += "x(" + sprite.childWaypoints[wpCount][0] + ") - y("+ sprite.childWaypoints[wpCount][1] +")\n"
+					} else {
+						info += "\n";
+					}
+				}
 			}
 		}
 		info += "\n";
