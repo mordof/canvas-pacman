@@ -6,7 +6,7 @@ var mapWidth = 30;
 var mapHeight = 33;
 
 var tileSize = ((screenWidth / mapWidth) < (screenHeight / mapHeight) ? 
-    		(screenWidth / mapWidth) | 0 : (screenHeight / mapHeight) | 0);
+        (screenWidth / mapWidth) | 0 : (screenHeight / mapHeight) | 0);
 
 tileSize = tileSize * 0.80
 

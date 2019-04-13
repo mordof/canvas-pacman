@@ -1,18 +1,18 @@
 function spriteBase(){
-	this.xTilePos = 0;	// current/last actual x
-	this.yTilePos = 0;	// current/last actual y
-	this.moving = false;
-	this.queuedMovement = false;
-	this.xPos = 0;
-	this.yPos = 0;
-	this.leftState = false;
-	this.rightState = false;
-	this.upState = false;
-	this.downState = false;
-	this.width = 0;
-	this.height = 0;
-	this.facing = 'right';
-	this.tileSpeed = 6;
+  this.xTilePos = 0;	// current/last actual x
+  this.yTilePos = 0;	// current/last actual y
+  this.moving = false;
+  this.queuedMovement = false;
+  this.xPos = 0;
+  this.yPos = 0;
+  this.leftState = false;
+  this.rightState = false;
+  this.upState = false;
+  this.downState = false;
+  this.width = 0;
+  this.height = 0;
+  this.facing = 'right';
+  this.tileSpeed = 6;
 }
 
 spriteBase.prototype.isOppositeStateDown = function() {
@@ -55,7 +55,7 @@ spriteBase.prototype.gridUpdated = function(){}
 spriteBase.prototype.checkForPac = function(x, y){}
 
 spriteBase.prototype.changeDirection = function(direction){
-	this.facing = direction;
+  this.facing = direction;
 }
 
 spriteBase.prototype.doMoveInits = function() {
@@ -63,54 +63,54 @@ spriteBase.prototype.doMoveInits = function() {
   if (this.moving && (!this.isOppositeStateDown())) return false;
 
   if (this.leftState) {
-  	if (this.xTilePos > 0) {
-	    if (maps[0][this.yTilePos][this.xTilePos - 1]) {
-	       this.facing = 'left';
-	       this.moving = true;
-	       this.xTilePos -= 1;
+    if (this.xTilePos > 0) {
+      if (maps[0][this.yTilePos][this.xTilePos - 1]) {
+         this.facing = 'left';
+         this.moving = true;
+         this.xTilePos -= 1;
          this.queuedMovement = false;
-	    } else if (this.facing != 'left') {
+      } else if (this.facing != 'left') {
         this.moving = true;
         this.resetStateToFacing();
       }
-	  }
+    }
   } else if (this.rightState) {
-  	if (this.xTilePos < mapWidth - 1) {
-	    if (maps[0][this.yTilePos][this.xTilePos + 1]) {
-	      this.facing = 'right';
-	      this.moving = true;
-	      this.xTilePos += 1;
+    if (this.xTilePos < mapWidth - 1) {
+      if (maps[0][this.yTilePos][this.xTilePos + 1]) {
+        this.facing = 'right';
+        this.moving = true;
+        this.xTilePos += 1;
         this.queuedMovement = false;
-	      //if (maps[0][this.yTilePos][this.xTilePos + 1] == 9) { this.xTilePos = 0 } else { this.xTilePos += 1 };
-	    } else if (this.facing != 'right') {
+        //if (maps[0][this.yTilePos][this.xTilePos + 1] == 9) { this.xTilePos = 0 } else { this.xTilePos += 1 };
+      } else if (this.facing != 'right') {
         this.moving = true;
         this.resetStateToFacing();
       }
-	  }
+    }
   } else if (this.upState) {
-  	if (this.yTilePos > 0) {
-	    if (maps[0][this.yTilePos - 1][this.xTilePos]) {
-	      this.facing = 'up';
-	      this.moving = true;
-	      this.yTilePos -= 1;
+    if (this.yTilePos > 0) {
+      if (maps[0][this.yTilePos - 1][this.xTilePos]) {
+        this.facing = 'up';
+        this.moving = true;
+        this.yTilePos -= 1;
         this.queuedMovement = false;
-	    } else if (this.facing != 'up') {
+      } else if (this.facing != 'up') {
         this.moving = true;
         this.resetStateToFacing();
       }
-	  }
+    }
   } else if (this.downState) {
-  	if (this.yTilePos < mapHeight - 1) {
-	    if (maps[0][this.yTilePos + 1][this.xTilePos]) {
-	      this.facing = 'down';
-	      this.moving = true;
-	      this.yTilePos += 1;
+    if (this.yTilePos < mapHeight - 1) {
+      if (maps[0][this.yTilePos + 1][this.xTilePos]) {
+        this.facing = 'down';
+        this.moving = true;
+        this.yTilePos += 1;
         this.queuedMovement = false;
-	    } else if (this.facing != 'down') {
+      } else if (this.facing != 'down') {
         this.moving = true;
         this.resetStateToFacing();
       }
-	  }
+    }
   }
 }
 
@@ -161,7 +161,7 @@ spriteBase.prototype.interpolateMovements = function() {
 
   // if we arrived on a tile
   if (!this.moving) {
-  		this.checkForPac(this.xTilePos, this.yTilePos);
+    this.checkForPac(this.xTilePos, this.yTilePos);
   }  
 
   if (this.leftState || this.rightState || this.upState || this.downState) this.queuedMovement = true;
