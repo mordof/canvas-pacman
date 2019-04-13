@@ -1,7 +1,7 @@
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                                window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
-document.addEventListener("DOMContentLoaded", function() {  // non jQuery document ready
+function runPacman () {  // non jQuery document ready
   pacmanCanvasEle = document.querySelector('canvas');   // canvas object
   ctx = pacmanCanvasEle.getContext('2d');				// screen surface context
 
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {  // non jQuery docume
   // initialMapCheck();
 
   requestAnimationFrame(frameStep);
-});
+};
 
 var frameData = {
   start: null,
