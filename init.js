@@ -47,18 +47,22 @@ document.addEventListener("DOMContentLoaded", function() {  // non jQuery docume
   var colors = ["#00FFFF", "#FF9933", "#80FF00"]
   var names = ["Turqoise Ghost", "Orange Ghost", "Green Ghost"]
 
-  sprites.push(pacman, ghost, cherry);
+  sprites.push(
+    pacman,
+    // ghost,
+    cherry,
+  );
 
-  for(var i =0;i<3;++i){
-    ghosty = new ghostSpriteBase();
-    ghosty.color = colors[i];
-    ghosty.name = names[i]
-    sprites.push(ghosty);
-  }
+  // for(var i =0;i<3;++i){
+  //   ghosty = new ghostSpriteBase();
+  //   ghosty.color = colors[i];
+  //   ghosty.name = names[i]
+  //   sprites.push(ghosty);
+  // }
 
   renderMap();
 
-  //initialMapCheck();
+  // initialMapCheck();
 
   requestAnimationFrame(frameStep);
 });

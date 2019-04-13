@@ -51,6 +51,15 @@ function getOppositeState(state){
   }
 }
 
+function getFacingFromState(state){
+  switch(state) {
+    case 'leftState': return 'left';
+    case 'rightState': return 'right';
+    case 'upState': return 'up';
+    case 'downState': return 'down';
+  }
+}
+
 spriteBase.prototype.gridUpdated = function(){}
 spriteBase.prototype.checkForPac = function(x, y){}
 
@@ -121,21 +130,40 @@ spriteBase.prototype.interpolateMovements = function() {
   speedInPixels = (this.tileSpeed * tileSize) * (frameData.delta / 1000);
   if (!this.moving || !allowMovement) return false;
 
-  switch (this.facing) {  
+  switch (this.facing) {
     case 'left':
       this.xPos -= speedInPixels;
         if (this.xPos <= destXpos) {
-          if (maps[0][this.yTilePos][this.xTilePos] == 9) { this.xTilePos = mapWidth-1; this.xPos = (tileSize*(mapWidth-1)) } else { this.xPos = destXpos };
-          //this.xPos = destXpos; //if we moved to or beyond, set at pos
+          if (isTeleportPad(maps[0][this.yTilePos][this.xTilePos])) {
+            destination = getTeleportationPadDestination(this.xTilePos, this.yTilePos)
+            this.xPos = tileSize*destination.x;
+            this.yPos = tileSize*destination.y;
+            this.xTilePos = destination.x;
+            this.yTilePos = destination.y;
+            this.facing = getFacingFromState(destination.direction);
+            this[destination.direction] = true;
+          } else {
+            this.xPos = destXpos
+          };
           this.gridUpdated();
-          this.moving = false; //done moving 
-        } 
+          this.moving = false; //done moving
+        }
       break;
     case 'right':
       this.xPos += speedInPixels;
       if (this.xPos >= destXpos) {
-        if (maps[0][this.yTilePos][this.xTilePos] == 9) { this.xTilePos = 0; this.xPos = 0 } else { this.xPos = destXpos };
-        //this.xPos = destXpos;
+        if (isTeleportPad(maps[0][this.yTilePos][this.xTilePos])) {
+          destination = getTeleportationPadDestination(this.xTilePos, this.yTilePos)
+          this.xPos = tileSize*destination.x;
+          this.yPos = tileSize*destination.y;
+          this.xTilePos = destination.x;
+          this.yTilePos = destination.y;
+          this.facing = getFacingFromState(destination.direction);
+          this[destination.direction] = true;
+        } else {
+          this.xPos = destXpos
+        };
+
         this.gridUpdated();
         this.moving = false;
       }
@@ -143,16 +171,37 @@ spriteBase.prototype.interpolateMovements = function() {
     case 'up':
       this.yPos -= speedInPixels;
       if (this.yPos <= destYpos) {
-          if (maps[0][this.yTilePos][this.xTilePos] == 9) { this.yTilePos = mapHeight-1; this.yPos = (tileSize*(mapHeight-1)) } else { this.yPos = destYpos };
-          //this.yPos = destYpos; //if we moved to or beyond, set at pos
+        if (isTeleportPad(maps[0][this.yTilePos][this.xTilePos])) {
+          destination = getTeleportationPadDestination(this.xTilePos, this.yTilePos)
+          this.xPos = tileSize*destination.x;
+          this.yPos = tileSize*destination.y;
+          this.xTilePos = destination.x;
+          this.yTilePos = destination.y;
+          this.facing = getFacingFromState(destination.direction);
+          this[destination.direction] = true;
+          } else {
+            this.yPos = destYpos
+          };
+
           this.gridUpdated();
-          this.moving = false; //done moving 
-        } 
+          this.moving = false; //done moving
+        }
       break;
     case 'down':
       this.yPos += speedInPixels;
       if (this.yPos >= destYpos) {
-        if (maps[0][this.yTilePos][this.xTilePos] == 9) { this.yTilePos = 0; this.yPos = 0 } else { this.yPos = destYpos };
+        if (isTeleportPad(maps[0][this.yTilePos][this.xTilePos])) {
+          destination = getTeleportationPadDestination(this.xTilePos, this.yTilePos)
+          this.xPos = tileSize*destination.x;
+          this.yPos = tileSize*destination.y;
+          this.xTilePos = destination.x;
+          this.yTilePos = destination.y;
+          this.facing = getFacingFromState(destination.direction);
+          this[destination.direction] = true;
+        } else {
+          this.yPos = destYpos
+        };
+
         this.gridUpdated();
         this.moving = false;
       }
@@ -162,7 +211,7 @@ spriteBase.prototype.interpolateMovements = function() {
   // if we arrived on a tile
   if (!this.moving) {
     this.checkForPac(this.xTilePos, this.yTilePos);
-  }  
+  }
 
   if (this.leftState || this.rightState || this.upState || this.downState) this.queuedMovement = true;
 }

@@ -14,6 +14,8 @@ for(var y = 0;y<mapHeight;++y){
 
 n = null
 f = false
+a = '9a-rightState'
+A = '9a-upState'
 
 maps[0] = [
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -31,7 +33,7 @@ maps[0] = [
   [0,0,8,8,8,0,0,2,0,0,1,1,1,1,1,1,1,1,1,1,0,0,2,0,0,8,8,8,0,0],
   [0,0,0,0,0,0,0,2,0,0,1,f,f,f,n,n,f,f,f,1,0,0,2,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,2,0,0,1,f,8,8,8,8,8,8,f,1,0,0,2,0,0,0,0,0,0,0],
-  [9,1,1,1,1,1,1,2,1,1,1,f,8,8,8,8,8,8,f,1,1,1,2,1,1,1,1,1,1,9],
+  [a,1,1,1,1,1,1,2,1,1,1,f,8,8,8,8,8,8,f,1,1,1,A,1,1,1,1,1,1,1],
   [0,0,0,0,0,0,0,2,0,0,1,f,8,8,8,8,8,8,f,1,0,0,2,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,2,0,0,1,f,f,f,f,f,f,f,f,1,0,0,2,0,0,0,0,0,0,0],
   [0,0,8,8,8,0,0,2,0,0,1,1,1,1,1,1,1,1,1,1,0,0,2,0,0,8,8,8,0,0],
@@ -65,7 +67,7 @@ function buildWaypoints(mapNumber) {
     for (var x = 0; x < mapWidth; x++) {
       wayPointLookup[mapNumber][y][x] = false;
 
-      if(maps[mapNumber][y][x] == 1 || maps[mapNumber][y][x] == 2 || maps[mapNumber][y][x] == 3 || maps[mapNumber][y][x] == 9){
+      if(maps[mapNumber][y][x] == 1 || maps[mapNumber][y][x] == 2 || maps[mapNumber][y][x] == 3 || isTeleportPad(maps[mapNumber][y][x])){
         wayPoints[jCount] = [x, y,[]];
         wayPointLookup[mapNumber][y][x] = jCount;
         jCount++;
@@ -88,9 +90,44 @@ function buildWaypoints(mapNumber) {
   console.log(wayPoints);
 }
 
+function isTeleportPad(mapItem) {
+  return typeof mapItem === 'string' && mapItem[0] === '9';
+}
+
+function collectTeleportPads(){
+  var mapWidth = maps[0][0].length;
+  var mapHeight = maps[0].length;
+
+  teleportPads = {};
+
+  for (var y = 0; y < mapHeight; y++) {
+    for (var x = 0; x < mapWidth; x++) {
+      if (isTeleportPad(maps[0][y][x])) {
+        key = maps[0][y][x].substring(0, 2);
+        teleportPads[key] = teleportPads[key] || [];
+        teleportPads[key].push({
+          x,
+          y,
+          direction: maps[0][y][x].split('-')[1],
+        });
+      }
+    }
+  }
+
+  return teleportPads;
+}
+
+function getTeleportationPadDestination(x, y){
+  pair = teleportPads[maps[0][y][x].substring(0, 2)];
+  destination = pair.filter(tpPad => tpPad.x !== x || tpPad.y !== y)[0];
+
+  return destination;
+}
+
 function collectWaypointNeighbours(waypoint){
   x = waypoint[0]
   y = waypoint[1]
+  teleportPads = collectTeleportPads();
 
   nearestGrids = [[-1, 0, "leftState"], [0, -1, "upState"], [1, 0, "rightState"], [0, 1, "downState"]];
   neighbours = []
@@ -103,25 +140,10 @@ function collectWaypointNeighbours(waypoint){
     }
   })
 
-  // teleportation pad.. we need to make the pairing pad it's child also.
-  if(maps[0][y][x] == 9){
-    // we're on the right hand side of the map.
-    // for now, we're assuming that the very left hand on the same y is the destination.
-    if(x + 1 == mapWidth){
-      wayPoints[wayPointLookup[0][y][x - 1]][2].push([wayPointLookup[0][y][0], "rightState"]);
-    }
-    // heading to left edge of the map
-    if(x - 1 < 0){
-      wayPoints[wayPointLookup[0][y][1]][2].push([wayPointLookup[0][y][mapWidth - 1], "leftState"]);
-    }
-    // bottom of the map
-    if(y + 1 == mapHeight){
-      wayPoints[wayPointLookup[0][y - 1][x]][2].push([wayPointLookup[0][0][x], "upState"]);
-    }
-    // top of the map
-    if(y - 1 < 0){
-      wayPoints[wayPointLookup[0][y + 1][x]][2].push([wayPointLookup[0][mapHeight - 1][x], "downState"]);
-    }
+  // teleportation pad.. add teleportation pad pairing to neighbours.
+  if(isTeleportPad(maps[0][y][x])){
+    destination = getTeleportationPadDestination(x, y);
+    neighbours.push([wayPointLookup[0][destination.y][destination.x], destination.direction]);
   }
 
   return neighbours;
