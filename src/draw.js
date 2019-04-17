@@ -1,27 +1,15 @@
 function draw(){
-  //renderMap();
-  ctx.drawImage(mapBoundaries, xOffset, yOffset, mapWidth * tileSize, mapHeight * tileSize);
-  renderPacs();
+
+  // if(showDebug)
+  //   drawWaypoints();
+
+
+
+  // This isn't original JS, it's a pseudo-TS call for where this should take place.
+  // CollisionHandler.run();
+
   if(showDebug)
-    drawWaypoints();
-
-  drawCurrentFruit();
-
-  sprites.forEach(function(sprite){
-    if(sprite.type == "fruit"){
-      sprite.draw();
-    }
-  });
-
-  sprites.forEach(function(sprite){
-    if(sprite.type != "fruit"){
-      if(sprite.queuedMovement);
-        sprite.doMoveInits();
-      sprite.interpolateMovements();
-      sprite.draw();
-    }
-  });
-  drawDebugInfo();
+    drawDebugInfo();
   drawScore();
   drawLives();
 }
@@ -46,7 +34,7 @@ function drawWaypoints() {
   ctx.restore();
 }
 
-function drawCurrentFruit(){
+function drawFruit(){
   for(var i = 0;i < fruits.length; ++i){
     fruits[i].draw(xOffset + mapWidth * tileSize - (tileSize * (i + 1)) - tileSize / 2 - (tileSize / 3) * i, yOffset + mapHeight * tileSize)
   }
@@ -71,13 +59,7 @@ function drawLives(){
 function drawScore(){
   ctx.font = (tileSize * 1.2) + "px 'Luckiest Guy'";
   ctx.fillStyle = "yellow";
-  ctx.fillText("Score " + pad(score.total(), 8), xOffset + 10, yOffset - 5);
-}
-
-function pad(n, width, z) {
-  z = z || '0';
-  n = n + '';
-  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+  ctx.fillText("Score " + score.total().toString.padStart(8, '0'), xOffset + 10, yOffset - 5);
 }
 
 function drawDebugInfo(){

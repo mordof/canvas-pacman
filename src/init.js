@@ -1,14 +1,13 @@
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+var sprites = [];
+
+var showDebug = false;
+
+var ghostCollision = true;
+
 
 function runPacman () {  // non jQuery document ready
-  pacmanCanvasEle = document.querySelector('canvas');   // canvas object
-  ctx = pacmanCanvasEle.getContext('2d');				// screen surface context
 
-  if(!showDebug) document.getElementById("debugInfo").style.display = "none";
-
-  pacmanCanvasEle.width = window.innerWidth;
-  pacmanCanvasEle.height = window.innerHeight;
 
   score = new scoreKeeper();
   pacman = new pacmanSpriteBase();
@@ -31,13 +30,7 @@ function runPacman () {  // non jQuery document ready
   else
     ghost.rightState = true;
 
-  cherry = new cherrySpriteBase();
-  strawberry = new strawberrySpriteBase();
-  peach = new peachSpriteBase();
-  apple = new appleSpriteBase();
-  watermelon = new watermelonSpriteBase();
 
-  fruits = [cherry, strawberry, peach, apple, watermelon];
 
   ghost.color = "#FF3333";
   ghost.name = "Red Ghost";
@@ -92,7 +85,7 @@ function frameStep(timestamp){
   //fps stuff
   if ((frameData.end - frameData.fpsLastCalced) >= 1000 ) {
     frameData.fpsLastCalced = frameData.end;
-    document.getElementById("fps").innerHTML = "FPS: " + frameData.fps;
+    // document.getElementById("fps").innerHTML = "FPS: " + frameData.fps;
     frameData.fps = 0;
   }
 

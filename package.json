@@ -1,0 +1,19 @@
+{
+  "name": "pacman",
+  "version": "1.0.0",
+  "description": "A pacman game for all ages!",
+  "main": "dist/bundle.js",
+  "repository": "git@github.com:mordof/canvas-pacman.git",
+  "author": "Mike Winger <mike.winger87@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.4.3",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0"
+  }
+}
