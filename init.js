@@ -18,13 +18,13 @@ document.addEventListener("DOMContentLoaded", function() {  // non jQuery docume
   // ghost is our red guy.
   // we want him to sit outside the box, and to go either left or right immediately
   // these are the necessary variables set to make that happen
-  ghost.xTilePos = 14; // current/last actual x
+  ghost.xTilePos = 23; // current/last actual x
   ghost.yTilePos = 12; // current/last actual y
-  ghost.xPos = tileSize * 14 + (tileSize / 2);
-  ghost.yPos = tileSize * 12;
+  ghost.xPos = tileSize * ghost.xTilePos + (tileSize / 2);
+  ghost.yPos = tileSize * ghost.yTilePos;
   ghost.AIstate = "roaming";
   var headLeft = (Math.random() * 100) > 50
-  ghost.nextWayPoint = headLeft ? 112 : 114;
+  ghost.nextWayPoint = wayPointLookup[0][ghost.yTilePos][ghost.xTilePos + (headLeft ? -1 : 1)];
   ghost.facing = headLeft ? "left" : "right";
   ghost.upState = false;
   if(headLeft)
@@ -89,7 +89,7 @@ function frameStep(timestamp){
 	//fps stuff
 	if ((frameData.end - frameData.fpsLastCalced) >= 1000 ) {
 		frameData.fpsLastCalced = frameData.end;
-		document.getElementById("fps").innerHTML = "FPS: " + frameData.fps;
+		//document.getElementById("fps").innerHTML = "FPS: " + frameData.fps;
 		frameData.fps = 0;
 	}
 

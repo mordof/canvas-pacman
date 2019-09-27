@@ -3,10 +3,10 @@ function cherrySpriteBase() {
 	this.type = "fruit";
 	this.width = (tileSize * 0.8) | 0;
 	this.height = (tileSize * 0.8) | 0;
-	this.xTilePos = 14;	// current/last actual x
-	this.yTilePos = 18;	// current/last actual y
-	this.xPos = tileSize * 14 + (tileSize / 2);
-	this.yPos = tileSize * 18;
+	this.xTilePos = 19;	// current/last actual x
+	this.yTilePos = 28;	// current/last actual y
+	this.xPos = tileSize * this.xTilePos;
+	this.yPos = tileSize * this.yTilePos;
 	this.collisionRadius = tileSize * 0.4;
 	this.value = 100;
 }

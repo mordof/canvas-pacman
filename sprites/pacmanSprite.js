@@ -3,10 +3,10 @@ function pacmanSpriteBase(){
 	this.type = "pacman";
 	this.width = (tileSize * 0.8) | 0;
 	this.height = (tileSize * 0.8) | 0;
-	this.xTilePos = 14;	// current/last actual x
-	this.yTilePos = 24;	// current/last actual y
-	this.xPos = tileSize * 14 + tileSize / 2;
-	this.yPos = tileSize * 24;
+	this.xTilePos = 17;	// current/last actual x
+	this.yTilePos = 15;	// current/last actual y
+	this.xPos = tileSize * this.xTilePos;
+	this.yPos = tileSize * this.yTilePos;
 	this.animationFirstDuration = 150;
 	this.animationSecondDuration = 150;
 	this.mouthOpenAngle = 0.7;
@@ -92,19 +92,19 @@ pacmanSpriteBase.prototype.interpolateMovements = function(){
 }
 
 function deathSequence(){
-	pacman.xTilePos = 14;	// current/last actual x
-	pacman.yTilePos = 24;	// current/last actual y
-	pacman.xPos = tileSize * 14 + tileSize / 2;
-	pacman.yPos = tileSize * 24;
+	pacman.xTilePos = 17;	// current/last actual x
+	pacman.yTilePos = 15;	// current/last actual y
+	pacman.xPos = tileSize * pacman.xTilePos;
+	pacman.yPos = tileSize * pacman.yTilePos;
 	pacman.angleDelta = pacman.mouthOpenAngle;
 	pacman.animationState = 'closing';
 	pacman.maniac = false;
 
 	for(var i = 1;i < sprites.length;++i){ if(sprites[i].type !== "ghost") { continue; }
-		sprites[i].xTilePos = 14;	// current/last actual x
+		sprites[i].xTilePos = 24;	// current/last actual x
 		sprites[i].yTilePos = 15;	// current/last actual y
-		sprites[i].xPos = tileSize * 14 + (tileSize / 2);
-		sprites[i].yPos = tileSize * 15;
+		sprites[i].xPos = tileSize * sprites[i].xTilePos + (tileSize / 2);
+		sprites[i].yPos = tileSize * sprites[i].yTilePos;
 		sprites[i].leftState = false;
 		sprites[i].downState = false;
 		sprites[i].rightState = false;
@@ -122,6 +122,7 @@ pacmanSpriteBase.prototype.checkForPac = function(x, y){
 	if(maps[0][y][x] == 2){
 		maps[0][y][x] = 1;
 		score.add("pac", 1);
+		totalPacs--;
 	}
 	if(maps[0][y][x] == 3){
 		maps[0][y][x] = 1;
@@ -130,6 +131,10 @@ pacmanSpriteBase.prototype.checkForPac = function(x, y){
 				sprites[i].panic();
 		}
 		score.add("bigPac", 1);
+		totalPacs--;
+	}
+	if (totalPacs < 1) {
+		window.location.reload();
 	}
 }
 

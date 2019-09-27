@@ -3,13 +3,13 @@ function ghostSpriteBase() {
 	this.type = "ghost";
 	this.width = (tileSize * 0.8) | 0;
 	this.height = (tileSize * 0.8) | 0;
-	this.xTilePos = 14;	// current/last actual x
+	this.xTilePos = 24;	// current/last actual x
 	this.yTilePos = 15;	// current/last actual y
-	this.xPos = tileSize * 14 + (tileSize / 2);
-	this.yPos = tileSize * 15;
+	this.xPos = tileSize * this.xTilePos + (tileSize / 2);
+	this.yPos = tileSize * this.yTilePos;
 	this.upState = true;
 	this.queuedMovement = true;
-	this.wayPoints = [[14, 15, "upState"], [14, 12, "leftState"], [13, 12]]
+	this.wayPoints = [[24, 15, "upState"], [24, 12, "leftState"], [23, 12]]
 	this.deathWaypointPath = null;
 	this.nextWayPoint = 1;
 	this.tileSpeed = 5;
