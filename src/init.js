@@ -49,16 +49,16 @@ function runPacman () {  // non jQuery document ready
 
   sprites.push(
     pacman,
-    // ghost,
+    ghost,
     cherry,
   );
 
-  // for(var i =0;i<3;++i){
-  //   ghosty = new ghostSpriteBase();
-  //   ghosty.color = colors[i];
-  //   ghosty.name = names[i]
-  //   sprites.push(ghosty);
-  // }
+  for(var i =0;i<3;++i){
+    ghosty = new ghostSpriteBase();
+    ghosty.color = colors[i];
+    ghosty.name = names[i]
+    sprites.push(ghosty);
+  }
 
   renderMap();
 

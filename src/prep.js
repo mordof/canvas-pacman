@@ -18,7 +18,7 @@ var yOffset = (((screenHeight / 2) - ((tileSize * mapHeight) / 2)) | 0) + 0.5;
 var sprites = [];
 var allowMovement = true;
 
-var showDebug = true;
+var showDebug = false;
 
 var ghostCollision = true;
 
